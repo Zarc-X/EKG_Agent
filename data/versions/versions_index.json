@@ -1,0 +1,150 @@
+{
+  "versions": [
+    {
+      "version_id": "100fbcdb-bf98-40b5-b7b7-dbedcf4ea535",
+      "label": "after:change-log-pipeline-test",
+      "created_at": "2026-04-27T04:18:12.756979+00:00",
+      "snapshot_path": "E:\\code\\Natural_Language_Processing\\CP\\agent_codex\\ekg_agent_refactor\\data\\versions\\100fbcdb-bf98-40b5-b7b7-dbedcf4ea535.db",
+      "metadata": {
+        "user_id": "pipeline-test-user",
+        "trace_id": "trace-pipeline-001",
+        "operation_summary": "pipeline test",
+        "change_log": {
+          "operation_type": "write",
+          "summary": "pipeline test change",
+          "sql": "UPDATE inventory SET quantity=123 WHERE part_number='STM32F103C8T6'",
+          "params": [
+            123,
+            "STM32F103C8T6"
+          ],
+          "touched_tables": [
+            "inventory"
+          ],
+          "rowcount": 1
+        }
+      },
+      "parent_version_id": null,
+      "thread_id": "web-thread",
+      "branch": "record-log-test"
+    },
+    {
+      "version_id": "40286b4d-94ed-4d1c-b4fd-27bb1f74f890",
+      "label": "after:change-log-pipeline-test",
+      "created_at": "2026-04-27T04:18:23.489949+00:00",
+      "snapshot_path": "E:\\code\\Natural_Language_Processing\\CP\\agent_codex\\ekg_agent_refactor\\data\\versions\\40286b4d-94ed-4d1c-b4fd-27bb1f74f890.db",
+      "metadata": {
+        "user_id": "pipeline-test-user",
+        "trace_id": "trace-pipeline-001",
+        "operation_summary": "pipeline test",
+        "change_log": {
+          "operation_type": "write",
+          "summary": "pipeline test change",
+          "sql": "UPDATE inventory SET quantity=123 WHERE part_number='STM32F103C8T6'",
+          "params": [
+            123,
+            "STM32F103C8T6"
+          ],
+          "touched_tables": [
+            "inventory"
+          ],
+          "rowcount": 1
+        }
+      },
+      "parent_version_id": "100fbcdb-bf98-40b5-b7b7-dbedcf4ea535",
+      "thread_id": "web-thread",
+      "branch": "record-log-test"
+    },
+    {
+      "version_id": "7d5963ea-dab8-4ecb-a4e6-d3468b3a8a3d",
+      "label": "after:change-log-pipeline-test",
+      "created_at": "2026-04-27T05:19:08.240074+00:00",
+      "snapshot_path": "E:\\code\\Natural_Language_Processing\\CP\\agent_codex\\ekg_agent_refactor\\data\\versions\\7d5963ea-dab8-4ecb-a4e6-d3468b3a8a3d.db",
+      "metadata": {
+        "user_id": "pipeline-test-user",
+        "trace_id": "trace-pipeline-001",
+        "operation_summary": "pipeline test",
+        "change_log": {
+          "operation_type": "write",
+          "summary": "pipeline test change",
+          "sql": "UPDATE inventory SET quantity=123 WHERE part_number='STM32F103C8T6'",
+          "params": [
+            123,
+            "STM32F103C8T6"
+          ],
+          "touched_tables": [
+            "inventory"
+          ],
+          "rowcount": 1
+        }
+      },
+      "parent_version_id": "40286b4d-94ed-4d1c-b4fd-27bb1f74f890",
+      "thread_id": "web-thread",
+      "branch": "record-log-test"
+    },
+    {
+      "version_id": "6a8c9f67-f97e-4531-8685-2946cc3ef203",
+      "label": "after:change-log-pipeline-test",
+      "created_at": "2026-04-27T05:19:26.566952+00:00",
+      "snapshot_path": "E:\\code\\Natural_Language_Processing\\CP\\agent_codex\\ekg_agent_refactor\\data\\versions\\6a8c9f67-f97e-4531-8685-2946cc3ef203.db",
+      "metadata": {
+        "user_id": "pipeline-test-user",
+        "trace_id": "trace-pipeline-001",
+        "operation_summary": "pipeline test",
+        "change_log": {
+          "operation_type": "write",
+          "summary": "pipeline test change",
+          "sql": "UPDATE inventory SET quantity=123 WHERE part_number='STM32F103C8T6'",
+          "params": [
+            123,
+            "STM32F103C8T6"
+          ],
+          "touched_tables": [
+            "inventory"
+          ],
+          "rowcount": 1
+        }
+      },
+      "parent_version_id": "7d5963ea-dab8-4ecb-a4e6-d3468b3a8a3d",
+      "thread_id": "web-thread",
+      "branch": "record-log-test"
+    },
+    {
+      "version_id": "6b7f8216-60e4-40a5-ac2d-36ae87041480",
+      "label": "after:change-log-pipeline-test",
+      "created_at": "2026-04-27T05:19:51.384841+00:00",
+      "snapshot_path": "E:\\code\\Natural_Language_Processing\\CP\\agent_codex\\ekg_agent_refactor\\data\\versions\\6b7f8216-60e4-40a5-ac2d-36ae87041480.db",
+      "metadata": {
+        "user_id": "pipeline-test-user",
+        "trace_id": "trace-pipeline-001",
+        "operation_summary": "pipeline test",
+        "change_log": {
+          "operation_type": "write",
+          "summary": "pipeline test change",
+          "sql": "UPDATE inventory SET quantity=123 WHERE part_number='STM32F103C8T6'",
+          "params": [
+            123,
+            "STM32F103C8T6"
+          ],
+          "touched_tables": [
+            "inventory"
+          ],
+          "rowcount": 1
+        }
+      },
+      "parent_version_id": "6a8c9f67-f97e-4531-8685-2946cc3ef203",
+      "thread_id": "web-thread",
+      "branch": "record-log-test"
+    }
+  ],
+  "heads": {
+    "web-thread": {
+      "main": "",
+      "feature-final-smoke": "",
+      "feature-final-smoke-2": "",
+      "record-log-test": "6b7f8216-60e4-40a5-ac2d-36ae87041480"
+    },
+    "new-thread-empty": {
+      "feature-empty-head": ""
+    }
+  }
+}
