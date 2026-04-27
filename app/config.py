@@ -20,6 +20,15 @@ class Settings(BaseSettings):
     security_secret: str = "replace-with-strong-secret"
 
     graph_rag_top_k: int = 5
+    graph_rag_iterations: int = 2
+    graph_rag_iteration_top_k: int = 8
+    graph_rag_max_query_terms: int = 24
+    graph_rag_semantic_weight: float = 0.65
+    graph_rag_control_weight: float = 0.35
+    graph_rag_adaptive_stop_enabled: bool = True
+    graph_rag_adaptive_min_gain: float = 0.08
+    graph_rag_adaptive_min_new_nodes: int = 1
+    graph_rag_adaptive_stable_rounds: int = 1
 
     sql_sandbox_enabled: bool = True
     sql_sandbox_max_statements: int = 8

@@ -134,11 +134,39 @@
       "parent_version_id": "6a8c9f67-f97e-4531-8685-2946cc3ef203",
       "thread_id": "web-thread",
       "branch": "record-log-test"
+    },
+    {
+      "version_id": "17b66a39-ab9e-483f-a3db-5d5b39eaa0e9",
+      "label": "after:解释器测试",
+      "created_at": "2026-04-27T12:49:27.544863+00:00",
+      "snapshot_path": "E:\\code\\Natural_Language_Processing\\CP\\agent_codex\\ekg_agent_refactor\\data\\versions\\17b66a39-ab9e-483f-a3db-5d5b39eaa0e9.db",
+      "metadata": {
+        "thread_id": "web-thread",
+        "user_id": "tester",
+        "branch": "main",
+        "phase": "after",
+        "trace_id": "trace-change-exp",
+        "change_log": {
+          "operation_type": "write",
+          "summary": "更新库存测试",
+          "sql": "UPDATE inventory SET quantity = quantity + 1 WHERE part_number = ?",
+          "params": [
+            "STM32F103C8T6"
+          ],
+          "touched_tables": [
+            "inventory"
+          ],
+          "rowcount": 42
+        }
+      },
+      "parent_version_id": null,
+      "thread_id": "web-thread",
+      "branch": "main"
     }
   ],
   "heads": {
     "web-thread": {
-      "main": "",
+      "main": "17b66a39-ab9e-483f-a3db-5d5b39eaa0e9",
       "feature-final-smoke": "",
       "feature-final-smoke-2": "",
       "record-log-test": "6b7f8216-60e4-40a5-ac2d-36ae87041480"

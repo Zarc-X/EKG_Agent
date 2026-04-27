@@ -14,6 +14,7 @@ from .models import (
     ApprovalCopilotSummary,
     ApprovalPolicyMapping,
     ApprovalTicket,
+    ChangeExplanationItem,
     ChangeLogItem,
     ChatRequest,
     ChatResponse,
@@ -32,6 +33,9 @@ class PendingExecution:
 
 
 class UnifiedWorkflowService:
+    _PROTECTED_TABLES = {"components", "inventory", "bom", "supplier_pricing"}
+    _RISK_ORDER = {"low": 0, "medium": 1, "high": 2, "critical": 3, "unknown": 4}
+
     def __init__(
         self,
         *,
@@ -250,6 +254,7 @@ class UnifiedWorkflowService:
         before_version: VersionRecord | None = None
         after_version: VersionRecord | None = None
         change_log: dict[str, Any] | None = None
+        ontology_update: dict[str, Any] | None = None
 
         try:
             if action.requires_write:
@@ -290,6 +295,22 @@ class UnifiedWorkflowService:
                     branch=current_branch,
                     parent_version_id=before_version.version_id if before_version else None,
                 )
+                try:
+                    ontology_update = self.graph_rag.apply_ontology_incremental_update(
+                        thread_id=request.thread_id,
+                        branch=current_branch,
+                        user_id=request.user_id,
+                        trace_id=pre.trace_id,
+                        change_log=change_log,
+                        version_id=after_version.version_id if after_version else None,
+                        parent_version_id=before_version.version_id if before_version else None,
+                        recorded_at=datetime.now(timezone.utc).isoformat(),
+                    )
+                except Exception as ontology_exc:
+                    ontology_update = {
+                        "status": "failed",
+                        "reason": str(ontology_exc),
+                    }
 
             sec_result = self.security.SecurityExecutionResult(
                 success=True,
@@ -298,6 +319,7 @@ class UnifiedWorkflowService:
                     "version_id": after_version.version_id if after_version else None,
                     "parent_version_id": before_version.version_id if before_version else None,
                     "rowcount": execution.get("rowcount", 0),
+                    "ontology_update": ontology_update,
                 },
                 raw_result=execution,
             )
@@ -326,6 +348,7 @@ class UnifiedWorkflowService:
                     "during": during.to_dict(),
                     "post": post.to_dict(),
                     "change_log": change_log,
+                    "ontology_update": ontology_update,
                 },
                 evidence=self._to_evidence_items(graph_result),
                 execution=execution,
@@ -344,6 +367,7 @@ class UnifiedWorkflowService:
                 metadata={
                     "version_id": None,
                     "parent_version_id": before_version.version_id if before_version else None,
+                    "ontology_update": ontology_update,
                 },
                 raw_result={"error": str(exc)},
             )
@@ -371,6 +395,7 @@ class UnifiedWorkflowService:
                     "during": during.to_dict(),
                     "post": post.to_dict(),
                     "change_log": change_log,
+                    "ontology_update": ontology_update,
                 },
                 evidence=self._to_evidence_items(graph_result),
             )
@@ -559,6 +584,16 @@ class UnifiedWorkflowService:
 
         return out
 
+    def list_change_explanations(
+        self,
+        limit: int = 50,
+        *,
+        thread_id: str | None = None,
+        branch: str | None = None,
+    ) -> list[ChangeExplanationItem]:
+        logs = self.list_change_logs(limit=limit, thread_id=thread_id, branch=branch)
+        return [self._explain_change_log(item) for item in logs]
+
     def _active_branch(self, thread_id: str) -> str:
         return self._active_branch_by_thread.get(thread_id, "main")
 
@@ -617,6 +652,122 @@ class UnifiedWorkflowService:
             else:
                 out.append(str(item))
         return out
+
+    def _explain_change_log(self, item: ChangeLogItem) -> ChangeExplanationItem:
+        touched = [str(t).lower() for t in item.touched_tables]
+        sql_text = (item.sql or "").lower()
+
+        risk_level = "low" if item.operation_type != "write" else "medium"
+        reasons: list[str] = []
+
+        if item.operation_type == "write":
+            reasons.append("写操作默认需要更严格复核")
+
+        protected_hits = sorted({t for t in touched if t in self._PROTECTED_TABLES})
+        if protected_hits:
+            risk_level = self._raise_risk(risk_level, "high")
+            reasons.append(f"触及核心业务表: {', '.join(protected_hits)}")
+
+        if item.rowcount is None and item.operation_type == "write":
+            risk_level = self._raise_risk(risk_level, "high")
+            reasons.append("影响行数未知")
+        elif isinstance(item.rowcount, int):
+            if item.rowcount >= 5000:
+                risk_level = self._raise_risk(risk_level, "critical")
+                reasons.append(f"影响行数较大: {item.rowcount}")
+            elif item.rowcount >= 1000:
+                risk_level = self._raise_risk(risk_level, "high")
+                reasons.append(f"影响行数偏大: {item.rowcount}")
+            elif item.rowcount >= 200:
+                risk_level = self._raise_risk(risk_level, "medium")
+                reasons.append(f"影响行数中等: {item.rowcount}")
+
+        if re.search(r"\b(update|delete)\b", sql_text) and not re.search(r"\bwhere\b", sql_text):
+            risk_level = "critical"
+            reasons.append("检测到无 WHERE 条件的 UPDATE/DELETE")
+
+        if re.search(r"\b(drop|truncate)\b", sql_text):
+            risk_level = "critical"
+            reasons.append("检测到破坏性关键词 DROP/TRUNCATE")
+
+        impact_scope: list[str] = []
+        if touched:
+            impact_scope.append(f"触表范围: {', '.join(touched)}")
+        else:
+            impact_scope.append("触表范围: 未解析到明确表名")
+
+        if item.rowcount is None:
+            impact_scope.append("影响行数: 未知")
+        else:
+            impact_scope.append(f"影响行数: {item.rowcount}")
+
+        impact_scope.append(f"操作类型: {item.operation_type}")
+        if item.trace_id:
+            impact_scope.append(f"审计追踪: {item.trace_id}")
+
+        risk_cn = {
+            "low": "低",
+            "medium": "中",
+            "high": "高",
+            "critical": "严重",
+            "unknown": "未知",
+        }.get(risk_level, "未知")
+
+        reason_text = "；".join(reasons[:2]) if reasons else "未检测到显著风险信号"
+        management_summary = (
+            f"变更“{item.summary}”已记录。分支 {item.branch} 的风险等级为{risk_cn}，"
+            f"{reason_text}。"
+        )
+
+        if risk_level in {"high", "critical"}:
+            if item.parent_version_id:
+                rollback_recommendation = (
+                    f"建议优先冻结后续写入并进行抽样核验，若异常可回滚到父版本 {item.parent_version_id}。"
+                )
+            else:
+                rollback_recommendation = "建议立即创建修复版本并执行人工复核流程。"
+        elif risk_level == "medium":
+            rollback_recommendation = "建议在发布窗口前完成数据抽样核验，必要时回滚到父版本。"
+        elif risk_level == "low":
+            rollback_recommendation = "建议继续观察并保留当前版本快照，通常无需立即回滚。"
+        else:
+            rollback_recommendation = "建议补充影响评估信息后再决定是否回滚。"
+
+        checks = [
+            "核对变更摘要与业务需求是否一致。",
+            "核对触表范围是否符合预期。",
+            "复核审计 trace 与审批记录是否完整。",
+        ]
+        if item.rowcount is None:
+            checks.append("补充影响行数评估，避免遗漏大范围变更。")
+        if risk_level in {"high", "critical"}:
+            checks.append("在下一次写入前完成回滚预案演练。")
+
+        return ChangeExplanationItem(
+            version_id=item.version_id,
+            parent_version_id=item.parent_version_id,
+            label=item.label,
+            created_at=item.created_at,
+            thread_id=item.thread_id,
+            branch=item.branch,
+            trace_id=item.trace_id,
+            user_id=item.user_id,
+            operation_type=item.operation_type,
+            summary=item.summary,
+            touched_tables=item.touched_tables,
+            rowcount=item.rowcount,
+            risk_level=risk_level if risk_level in self._RISK_ORDER else "unknown",
+            impact_scope=impact_scope,
+            management_summary=management_summary,
+            rollback_recommendation=rollback_recommendation,
+            rollback_target_version_id=item.parent_version_id,
+            checks=self._unique_keep_order(checks),
+        )
+
+    def _raise_risk(self, current: str, target: str) -> str:
+        if self._RISK_ORDER.get(target, -1) > self._RISK_ORDER.get(current, -1):
+            return target
+        return current
 
     def _build_approval_copilot(
         self,

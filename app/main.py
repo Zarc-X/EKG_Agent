@@ -110,6 +110,15 @@ def create_app() -> FastAPI:
     graph_rag = GraphRAGService(
         store=ontology_store,
         linker=EntityLinker(ontology_store),
+        iterations=settings.graph_rag_iterations,
+        iteration_top_k=settings.graph_rag_iteration_top_k,
+        max_query_terms=settings.graph_rag_max_query_terms,
+        semantic_weight=settings.graph_rag_semantic_weight,
+        control_weight=settings.graph_rag_control_weight,
+        adaptive_stop_enabled=settings.graph_rag_adaptive_stop_enabled,
+        adaptive_min_gain=settings.graph_rag_adaptive_min_gain,
+        adaptive_min_new_nodes=settings.graph_rag_adaptive_min_new_nodes,
+        adaptive_stable_rounds=settings.graph_rag_adaptive_stable_rounds,
     )
 
     part_number_vocab = component_repo.list_part_numbers()

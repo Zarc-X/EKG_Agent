@@ -7,6 +7,7 @@ from app.core.models import (
     BranchCheckoutResponse,
     BranchCreateRequest,
     BranchCreateResponse,
+    ChangeExplanationItem,
     ChangeLogItem,
     VersionTreeResponse,
     VersionView,
@@ -141,3 +142,13 @@ def list_change_logs(
     workflow: UnifiedWorkflowService = Depends(get_workflow),
 ) -> list[ChangeLogItem]:
     return workflow.list_change_logs(limit=limit, thread_id=thread_id, branch=branch)
+
+
+@router.get("/admin/change-explanations", response_model=list[ChangeExplanationItem])
+def list_change_explanations(
+    limit: int = 50,
+    thread_id: str | None = None,
+    branch: str | None = None,
+    workflow: UnifiedWorkflowService = Depends(get_workflow),
+) -> list[ChangeExplanationItem]:
+    return workflow.list_change_explanations(limit=limit, thread_id=thread_id, branch=branch)

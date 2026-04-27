@@ -136,7 +136,59 @@ class ChangeLogItem(BaseModel):
     rowcount: int | None = None
 
 
+class ChangeExplanationItem(BaseModel):
+    version_id: str
+    parent_version_id: str | None = None
+    label: str
+    created_at: datetime
+    thread_id: str
+    branch: str
+    trace_id: str | None = None
+    user_id: str | None = None
+    operation_type: str
+    summary: str
+    touched_tables: list[str] = Field(default_factory=list)
+    rowcount: int | None = None
+    risk_level: Literal["low", "medium", "high", "critical", "unknown"]
+    impact_scope: list[str] = Field(default_factory=list)
+    management_summary: str
+    rollback_recommendation: str
+    rollback_target_version_id: str | None = None
+    checks: list[str] = Field(default_factory=list)
+
+
 class KnowledgeSearchResponse(BaseModel):
     query: str
     context: str
     evidence: list[EvidenceItem]
+
+
+class KnowledgeIndexRebuildResponse(BaseModel):
+    status: str
+    nodes: int
+    control_nodes: int
+    edges: int
+
+
+class KnowledgeIncrementalUpdateRequest(BaseModel):
+    thread_id: str = Field(min_length=1)
+    branch: str = "main"
+    user_id: str | None = None
+    trace_id: str | None = None
+    version_id: str | None = None
+    parent_version_id: str | None = None
+    operation_type: str = "write"
+    summary: str = Field(min_length=1)
+    sql: str = ""
+    params: list[Any] = Field(default_factory=list)
+    touched_tables: list[str] = Field(default_factory=list)
+    rowcount: int | None = None
+    recorded_at: datetime | None = None
+
+
+class KnowledgeIncrementalUpdateResponse(BaseModel):
+    status: str
+    event_id: str | None = None
+    tables: list[str] = Field(default_factory=list)
+    index: dict[str, int] = Field(default_factory=dict)
+    reason: str | None = None

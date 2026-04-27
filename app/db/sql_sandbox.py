@@ -22,7 +22,7 @@ class SqlSandboxPolicy:
         self.max_statements = max_statements
         self.allowed_verbs = allowed_verbs or {"SELECT", "INSERT", "UPDATE", "DELETE"}
         self._blocked_keyword_pattern = re.compile(
-            r"\b(drop|alter|attach|detach|pragma|vacuum|reindex|analyze|create|truncate|replace)\b",
+            r"\b(?:drop|alter|attach|detach|pragma|vacuum|reindex|analyze|create|truncate|replace\b(?!\s*\())\b",
             flags=re.I,
         )
 

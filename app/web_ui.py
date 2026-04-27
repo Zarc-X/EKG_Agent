@@ -555,7 +555,7 @@ def render_home_html() -> str:
     .side {
       min-height: calc(100svh - 186px);
       display: grid;
-      grid-template-rows: auto auto auto;
+      grid-template-rows: auto auto auto auto auto;
       gap: 14px;
       animation: card-up 420ms ease-out 120ms both;
     }
@@ -665,6 +665,252 @@ def render_home_html() -> str:
       word-break: break-word;
     }
 
+    .approval-toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    .approval-list {
+      display: grid;
+      gap: 7px;
+      max-height: 190px;
+      overflow: auto;
+      margin-bottom: 10px;
+    }
+
+    .approval-item {
+      width: 100%;
+      text-align: left;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fcfffd;
+      padding: 9px;
+      cursor: pointer;
+      display: grid;
+      gap: 5px;
+      transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+    }
+
+    .approval-item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(15, 122, 90, 0.32);
+      background: #f7fcfa;
+    }
+
+    .approval-item.active {
+      border-color: rgba(15, 122, 90, 0.4);
+      box-shadow: inset 0 0 0 1px rgba(15, 122, 90, 0.2);
+      background: #eefaf4;
+    }
+
+    .approval-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .approval-item-title {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .approval-item-meta {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .ticket-badge {
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8fbfa;
+      color: #355347;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ticket-badge.pending { background: #fff4ef; color: #955437; border-color: rgba(162, 74, 46, 0.32); }
+    .ticket-badge.approved { background: #ebf8f1; color: #1a8455; border-color: rgba(26, 132, 85, 0.32); }
+    .ticket-badge.rejected { background: #fff2f5; color: #bb2d46; border-color: rgba(187, 45, 70, 0.32); }
+    .ticket-badge.executed { background: #e8f6ef; color: #18774d; border-color: rgba(24, 119, 77, 0.32); }
+    .ticket-badge.failed { background: #fff0f0; color: #b83333; border-color: rgba(184, 51, 51, 0.32); }
+
+    .approval-detail,
+    .copilot-card {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      padding: 9px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .approval-detail-grid {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .approval-detail-label { color: var(--muted); }
+    .approval-detail-value { color: var(--ink); word-break: break-word; }
+
+    .copilot-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .copilot-chip {
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f7fbfa;
+      color: #315145;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+    }
+
+    .copilot-list {
+      margin: 0;
+      padding-left: 16px;
+      display: grid;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .copilot-policy-row {
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #f8fbfa;
+      padding: 6px;
+      font-size: 11px;
+      color: #2f4d40;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .approval-decision {
+      margin-top: 10px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .approval-reason {
+      min-height: 68px;
+      font-size: 12px;
+      padding: 9px;
+      border-radius: 10px;
+    }
+
+    .decision-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .decision-btn {
+      min-height: 34px;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s ease, filter 0.14s ease;
+    }
+
+    .decision-btn:active { transform: translateY(1px); }
+    .decision-btn:disabled { opacity: 0.52; cursor: not-allowed; }
+
+    .decision-btn.approve {
+      background: #eaf8f1;
+      color: #166a47;
+      border-color: rgba(26, 132, 85, 0.34);
+    }
+
+    .decision-btn.reject {
+      background: #fff2f5;
+      color: #9a2f48;
+      border-color: rgba(187, 45, 70, 0.34);
+    }
+
+    .change-explain-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 9px;
+    }
+
+    .change-explain-list {
+      display: grid;
+      gap: 8px;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .change-explain-item {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fcfffd;
+      padding: 9px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .change-explain-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .change-explain-title {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .risk-badge {
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8fbfa;
+      color: #355347;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .risk-badge.low { background: #ebf8f1; color: #1a8455; border-color: rgba(26, 132, 85, 0.32); }
+    .risk-badge.medium { background: #fff7ed; color: #9a5a1a; border-color: rgba(154, 90, 26, 0.32); }
+    .risk-badge.high { background: #fff2f5; color: #a53a4f; border-color: rgba(165, 58, 79, 0.34); }
+    .risk-badge.critical { background: #ffecee; color: #b83333; border-color: rgba(184, 51, 51, 0.35); }
+    .risk-badge.unknown { background: #f3f6f5; color: #50695d; border-color: rgba(80, 105, 93, 0.28); }
+
+    .change-explain-meta {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
     @keyframes fade-up {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -701,6 +947,9 @@ def render_home_html() -> str:
       .branch-row,
       .branch-row.dual { grid-template-columns: 1fr; }
       .mini-btn { width: 100%; }
+      .approval-toolbar { grid-template-columns: 1fr; }
+      .decision-row { grid-template-columns: 1fr; }
+      .approval-detail-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -803,6 +1052,61 @@ def render_home_html() -> str:
         </section>
 
         <section class="card panel">
+          <h3>人工审批台</h3>
+          <div class="approval-toolbar">
+            <select id="approvalFilter" class="input-like">
+              <option value="all">全部审批单</option>
+              <option value="pending" selected>待审批</option>
+              <option value="approved">已批准</option>
+              <option value="rejected">已拒绝</option>
+              <option value="executed">已执行</option>
+              <option value="failed">执行失败</option>
+            </select>
+            <button id="refreshApprovalsBtn" class="mini-btn">刷新</button>
+          </div>
+
+          <div id="approvalsList" class="approval-list">
+            <div class="tree-empty">暂无审批单。</div>
+          </div>
+
+          <div class="approval-detail" id="approvalDetailCard">
+            <div class="summary-cell-label">审批单详情</div>
+            <div class="approval-detail-grid">
+              <div class="approval-detail-label">审批单 ID</div><div id="approvalDetailId" class="approval-detail-value">-</div>
+              <div class="approval-detail-label">状态</div><div id="approvalDetailStatus" class="approval-detail-value">-</div>
+              <div class="approval-detail-label">申请人</div><div id="approvalDetailRequester" class="approval-detail-value">-</div>
+              <div class="approval-detail-label">摘要</div><div id="approvalDetailSummary" class="approval-detail-value">-</div>
+              <div class="approval-detail-label">Trace</div><div id="approvalDetailTrace" class="approval-detail-value">-</div>
+              <div class="approval-detail-label">创建时间</div><div id="approvalDetailCreated" class="approval-detail-value">-</div>
+            </div>
+          </div>
+
+          <div class="copilot-card" id="approvalCopilotCard">
+            <div class="summary-cell-label">副驾驶摘要</div>
+            <div class="approval-item-meta">请选择审批单查看风险点、策略映射与建议动作。</div>
+          </div>
+
+          <div class="approval-decision">
+            <input id="approvalApproverInput" class="input-like" type="text" placeholder="审批人，例如 security.lead" value="web-approver" />
+            <textarea id="approvalReasonInput" class="approval-reason" placeholder="审批理由（可选）"></textarea>
+            <div class="decision-row">
+              <button id="approveTicketBtn" class="decision-btn approve" disabled>通过并执行</button>
+              <button id="rejectTicketBtn" class="decision-btn reject" disabled>拒绝</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card panel">
+          <h3>变更解释器</h3>
+          <div class="change-explain-toolbar">
+            <button id="refreshChangeExplainBtn" class="mini-btn">刷新解释</button>
+          </div>
+          <div id="changeExplainList" class="change-explain-list">
+            <div class="tree-empty">暂无变更解释。执行写操作后会自动生成管理摘要。</div>
+          </div>
+        </section>
+
+        <section class="card panel">
           <h3>图谱证据</h3>
           <div id="evidenceList" class="evidence-list">
             <div class="evidence-item">
@@ -855,11 +1159,33 @@ def render_home_html() -> str:
     const checkoutBranchBtn = document.getElementById('checkoutBranchBtn');
     const refreshTreeBtn = document.getElementById('refreshTreeBtn');
     const versionTree = document.getElementById('versionTree');
+    const approvalFilter = document.getElementById('approvalFilter');
+    const refreshApprovalsBtn = document.getElementById('refreshApprovalsBtn');
+    const approvalsList = document.getElementById('approvalsList');
+    const approvalDetailId = document.getElementById('approvalDetailId');
+    const approvalDetailStatus = document.getElementById('approvalDetailStatus');
+    const approvalDetailRequester = document.getElementById('approvalDetailRequester');
+    const approvalDetailSummary = document.getElementById('approvalDetailSummary');
+    const approvalDetailTrace = document.getElementById('approvalDetailTrace');
+    const approvalDetailCreated = document.getElementById('approvalDetailCreated');
+    const approvalApproverInput = document.getElementById('approvalApproverInput');
+    const approvalReasonInput = document.getElementById('approvalReasonInput');
+    const approveTicketBtn = document.getElementById('approveTicketBtn');
+    const rejectTicketBtn = document.getElementById('rejectTicketBtn');
+    const approvalCopilotCard = document.getElementById('approvalCopilotCard');
+    const refreshChangeExplainBtn = document.getElementById('refreshChangeExplainBtn');
+    const changeExplainList = document.getElementById('changeExplainList');
 
     const session = {
       userId: 'web-user',
       threadId: 'web-thread',
       branch: 'main',
+    };
+
+    const approvalState = {
+      selectedTicketId: null,
+      tickets: [],
+      currentDetail: null,
     };
 
     const statusMap = {
@@ -952,6 +1278,309 @@ def render_home_html() -> str:
         throw new Error(`${resp.status} ${detail}`.trim());
       }
       return data;
+    }
+
+    function approvalStatusLabel(status) {
+      const map = {
+        pending: '待审批',
+        approved: '已批准',
+        rejected: '已拒绝',
+        executed: '已执行',
+        failed: '执行失败',
+      };
+      return map[status] || String(status || '-');
+    }
+
+    function approvalBadgeClass(status) {
+      const s = String(status || '').toLowerCase();
+      if (['pending', 'approved', 'rejected', 'executed', 'failed'].includes(s)) {
+        return s;
+      }
+      return '';
+    }
+
+    function riskLevelLabel(level) {
+      const map = {
+        low: '低风险',
+        medium: '中风险',
+        high: '高风险',
+        critical: '严重风险',
+        unknown: '风险未知',
+      };
+      const key = String(level || 'unknown').toLowerCase();
+      return map[key] || `风险:${key}`;
+    }
+
+    function riskBadgeClass(level) {
+      const key = String(level || 'unknown').toLowerCase();
+      if (['low', 'medium', 'high', 'critical', 'unknown'].includes(key)) {
+        return key;
+      }
+      return 'unknown';
+    }
+
+    function renderChangeExplanations(items) {
+      const rows = Array.isArray(items) ? items : [];
+      if (!rows.length) {
+        changeExplainList.innerHTML = '<div class="tree-empty">暂无变更解释。执行写操作后会自动生成管理摘要。</div>';
+        return;
+      }
+
+      changeExplainList.innerHTML = rows.map((item) => {
+        const level = String(item.risk_level || 'unknown').toLowerCase();
+        const impactScope = Array.isArray(item.impact_scope) ? item.impact_scope : [];
+        const checks = Array.isArray(item.checks) ? item.checks : [];
+        const scopeText = impactScope.length ? impactScope.slice(0, 3).join('；') : '影响范围信息不足';
+        const checksText = checks.length ? checks.slice(0, 2).join('；') : '建议人工抽样核验';
+        const rollbackTarget = item.rollback_target_version_id ? shortId(item.rollback_target_version_id) : '-';
+
+        return `
+          <div class="change-explain-item">
+            <div class="change-explain-top">
+              <p class="change-explain-title">${escapeHtml(item.summary || item.label || '变更记录')}</p>
+              <span class="risk-badge ${riskBadgeClass(level)}">${escapeHtml(riskLevelLabel(level))}</span>
+            </div>
+            <div class="change-explain-meta">管理摘要: ${escapeHtml(item.management_summary || '-')}</div>
+            <div class="change-explain-meta">影响范围: ${escapeHtml(scopeText)}</div>
+            <div class="change-explain-meta">回滚建议: ${escapeHtml(item.rollback_recommendation || '-')}</div>
+            <div class="change-explain-meta">建议回滚点: ${escapeHtml(rollbackTarget)} · 检查项: ${escapeHtml(checksText)}</div>
+            <div class="change-explain-meta">trace: ${escapeHtml(shortId(item.trace_id || '-'))} · 时间: ${escapeHtml(formatDateTime(item.created_at))}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function loadChangeExplanations({ silent = false } = {}) {
+      const query = [
+        `thread_id=${encodeURIComponent(session.threadId)}`,
+        `branch=${encodeURIComponent(session.branch)}`,
+        'limit=30',
+      ].join('&');
+
+      try {
+        const data = await requestJson(`/v1/admin/change-explanations?${query}`);
+        renderChangeExplanations(data);
+      } catch (err) {
+        changeExplainList.innerHTML = `<div class="tree-empty">变更解释加载失败：${escapeHtml(err)}</div>`;
+        if (!silent) {
+          appendMessage('assistant', `变更解释加载失败: ${err}`, '系统');
+        }
+      }
+    }
+
+    function renderApprovalCopilotCard(copilot) {
+      if (!copilot || typeof copilot !== 'object') {
+        approvalCopilotCard.innerHTML = `
+          <div class="summary-cell-label">副驾驶摘要</div>
+          <div class="approval-item-meta">当前审批单暂无副驾驶建议。</div>
+        `;
+        return;
+      }
+
+      const confidence = Number(copilot.confidence);
+      const confidenceText = Number.isFinite(confidence) ? confidence.toFixed(2) : '-';
+      const riskPoints = Array.isArray(copilot.risk_points) ? copilot.risk_points : [];
+      const actions = Array.isArray(copilot.suggested_actions) ? copilot.suggested_actions : [];
+      const policies = Array.isArray(copilot.policy_mappings) ? copilot.policy_mappings : [];
+
+      const riskHtml = riskPoints.length
+        ? `<ul class="copilot-list">${riskPoints.slice(0, 5).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+        : '<div class="approval-item-meta">无显著风险点。</div>';
+
+      const actionHtml = actions.length
+        ? `<ul class="copilot-list">${actions.slice(0, 5).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+        : '<div class="approval-item-meta">暂无建议动作。</div>';
+
+      const policyHtml = policies.length
+        ? policies.slice(0, 4).map((item) => {
+            const policy = escapeHtml(item.policy || '-');
+            const status = escapeHtml(item.status || '-');
+            const evidence = escapeHtml(item.evidence || '-');
+            return `<div class="copilot-policy-row"><strong>${policy}</strong> · ${status}<br/>${evidence}</div>`;
+          }).join('')
+        : '<div class="approval-item-meta">暂无策略映射。</div>';
+
+      approvalCopilotCard.innerHTML = `
+        <div class="summary-cell-label">副驾驶摘要</div>
+        <div class="copilot-head">
+          <span class="copilot-chip">最终决策: ${escapeHtml(copilot.final_decision || '-')}</span>
+          <span class="copilot-chip">建议: ${escapeHtml(copilot.recommendation || '-')}</span>
+          <span class="copilot-chip">风险: ${escapeHtml(copilot.risk_level || '-')}</span>
+          <span class="copilot-chip">置信度: ${escapeHtml(confidenceText)}</span>
+        </div>
+        ${copilot.rationale ? `<div class="approval-item-meta">判定依据: ${escapeHtml(copilot.rationale)}</div>` : ''}
+        <div class="summary-cell-label">风险点</div>
+        ${riskHtml}
+        <div class="summary-cell-label">建议动作</div>
+        ${actionHtml}
+        <div class="summary-cell-label">策略映射</div>
+        ${policyHtml}
+      `;
+    }
+
+    function setApprovalDetail(detail) {
+      approvalState.currentDetail = detail;
+
+      if (!detail || typeof detail !== 'object' || !detail.ticket) {
+        approvalDetailId.textContent = '-';
+        approvalDetailStatus.textContent = '-';
+        approvalDetailRequester.textContent = '-';
+        approvalDetailSummary.textContent = '-';
+        approvalDetailTrace.textContent = '-';
+        approvalDetailCreated.textContent = '-';
+        approveTicketBtn.disabled = true;
+        rejectTicketBtn.disabled = true;
+        renderApprovalCopilotCard(null);
+        return;
+      }
+
+      const ticket = detail.ticket;
+      const payload = detail.payload && typeof detail.payload === 'object' ? detail.payload : {};
+      const copilot = detail.approval_copilot || payload.approval_copilot || null;
+      const action = payload.action && typeof payload.action === 'object' ? payload.action : {};
+
+      approvalDetailId.textContent = ticket.ticket_id || '-';
+      approvalDetailStatus.textContent = approvalStatusLabel(ticket.status);
+      approvalDetailRequester.textContent = ticket.requester || '-';
+      approvalDetailSummary.textContent = ticket.summary || action.summary || '-';
+      approvalDetailTrace.textContent = ticket.trace_id || '-';
+      approvalDetailCreated.textContent = formatDateTime(ticket.created_at);
+
+      const canDecide = String(ticket.status || '').toLowerCase() === 'pending';
+      approveTicketBtn.disabled = !canDecide;
+      rejectTicketBtn.disabled = !canDecide;
+      renderApprovalCopilotCard(copilot);
+    }
+
+    async function selectApproval(ticketId, { silent = false } = {}) {
+      if (!ticketId) return;
+
+      approvalState.selectedTicketId = ticketId;
+      approvalsList.querySelectorAll('.approval-item').forEach((item) => {
+        item.classList.toggle('active', item.getAttribute('data-ticket-id') === ticketId);
+      });
+
+      try {
+        const detail = await requestJson(`/v1/approvals/${encodeURIComponent(ticketId)}`);
+        setApprovalDetail(detail);
+      } catch (err) {
+        setApprovalDetail(null);
+        if (!silent) {
+          appendMessage('assistant', `审批单详情加载失败: ${err}`, '系统');
+        }
+      }
+    }
+
+    function renderApprovals(tickets, { keepSelection = true } = {}) {
+      const rows = Array.isArray(tickets) ? tickets : [];
+      approvalState.tickets = rows;
+
+      if (!rows.length) {
+        approvalsList.innerHTML = '<div class="tree-empty">暂无审批单。</div>';
+        approvalState.selectedTicketId = null;
+        setApprovalDetail(null);
+        return;
+      }
+
+      approvalsList.innerHTML = rows.map((ticket) => {
+        const status = String(ticket.status || '').toLowerCase();
+        return `
+          <button class="approval-item" data-ticket-id="${escapeHtml(ticket.ticket_id || '')}">
+            <div class="approval-item-top">
+              <p class="approval-item-title">${escapeHtml(ticket.summary || '-')}</p>
+              <span class="ticket-badge ${approvalBadgeClass(status)}">${escapeHtml(approvalStatusLabel(status))}</span>
+            </div>
+            <div class="approval-item-meta">ID: ${escapeHtml(shortId(ticket.ticket_id))} · 申请人: ${escapeHtml(ticket.requester || '-')}</div>
+            <div class="approval-item-meta">创建时间: ${escapeHtml(formatDateTime(ticket.created_at))}</div>
+          </button>
+        `;
+      }).join('');
+
+      approvalsList.querySelectorAll('.approval-item').forEach((item) => {
+        item.addEventListener('click', async () => {
+          const ticketId = item.getAttribute('data-ticket-id');
+          if (!ticketId) return;
+          await selectApproval(ticketId);
+        });
+      });
+
+      let targetId = keepSelection ? approvalState.selectedTicketId : null;
+      if (!targetId || !rows.some((t) => t.ticket_id === targetId)) {
+        const preferred = rows.find((t) => String(t.status || '').toLowerCase() === 'pending') || rows[0];
+        targetId = preferred ? preferred.ticket_id : null;
+      }
+
+      if (targetId) {
+        selectApproval(targetId, { silent: true });
+      } else {
+        setApprovalDetail(null);
+      }
+    }
+
+    async function loadApprovals({ silent = false, keepSelection = true } = {}) {
+      const status = String(approvalFilter.value || 'all').trim();
+      const query = status && status !== 'all' ? `?status=${encodeURIComponent(status)}` : '';
+
+      try {
+        const rows = await requestJson(`/v1/approvals${query}`);
+        renderApprovals(rows, { keepSelection });
+      } catch (err) {
+        approvalsList.innerHTML = `<div class="tree-empty">审批单加载失败：${escapeHtml(err)}</div>`;
+        setApprovalDetail(null);
+        if (!silent) {
+          appendMessage('assistant', `审批单加载失败: ${err}`, '系统');
+        }
+      }
+    }
+
+    async function decideApproval(approved) {
+      const ticketId = approvalState.selectedTicketId;
+      if (!ticketId) {
+        appendMessage('assistant', '请先选择一个审批单。', '系统');
+        return;
+      }
+
+      const approver = (approvalApproverInput.value || '').trim();
+      if (!approver) {
+        appendMessage('assistant', '请填写审批人。', '系统');
+        approvalApproverInput.focus();
+        return;
+      }
+
+      const reason = (approvalReasonInput.value || '').trim();
+      approveTicketBtn.disabled = true;
+      rejectTicketBtn.disabled = true;
+
+      try {
+        const data = await requestJson(`/v1/approvals/${encodeURIComponent(ticketId)}/decision`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            approved,
+            approver,
+            reason: reason || null,
+          }),
+        });
+
+        appendMessage('assistant', data.answer || (approved ? '审批通过并执行。' : '审批已拒绝。'), '审批台');
+        setStatus(data.status || 'waiting');
+        renderSummary(data);
+        renderEvidence(data.evidence || []);
+        renderDebug(data);
+        await loadVersionTree({ silent: true });
+        await loadChangeExplanations({ silent: true });
+        await loadApprovals({ silent: true, keepSelection: true });
+      } catch (err) {
+        appendMessage('assistant', `审批操作失败: ${err}`, '系统');
+        setStatus('error');
+      } finally {
+        if (approvalState.currentDetail) {
+          setApprovalDetail(approvalState.currentDetail);
+        } else {
+          approveTicketBtn.disabled = true;
+          rejectTicketBtn.disabled = true;
+        }
+      }
     }
 
     async function loadVersionTree({ silent = false } = {}) {
@@ -1085,6 +1714,7 @@ def render_home_html() -> str:
         appendMessage('assistant', `已回滚到版本 ${shortId(versionId)}（分支 ${session.branch}）。`, '系统');
         setStatus('completed');
         await loadVersionTree({ silent: true });
+        await loadChangeExplanations({ silent: true });
       } catch (err) {
         appendMessage('assistant', `回滚失败: ${err}`, '系统');
         setStatus('error');
@@ -1129,6 +1759,7 @@ def render_home_html() -> str:
         });
         session.branch = target;
         await loadVersionTree({ silent: true });
+        await loadChangeExplanations({ silent: true });
         if (!silentMessage) {
           appendMessage('assistant', `已切换到分支 ${target}。`, '系统');
         }
@@ -1211,6 +1842,11 @@ def render_home_html() -> str:
         renderEvidence(data.evidence || []);
         renderDebug(data);
         await loadVersionTree({ silent: true });
+        await loadChangeExplanations({ silent: true });
+        await loadApprovals({ silent: true, keepSelection: false });
+        if (data.approval_ticket_id) {
+          await selectApproval(String(data.approval_ticket_id), { silent: true });
+        }
       } catch (err) {
         appendMessage('assistant', `网络错误: ${err}`, '系统');
         setStatus('error');
@@ -1243,8 +1879,31 @@ def render_home_html() -> str:
       await loadVersionTree();
     });
 
+    refreshChangeExplainBtn.addEventListener('click', async () => {
+      await loadChangeExplanations();
+    });
+
+    refreshApprovalsBtn.addEventListener('click', async () => {
+      await loadApprovals({ keepSelection: true });
+    });
+
+    approvalFilter.addEventListener('change', async () => {
+      await loadApprovals({ keepSelection: false });
+    });
+
+    approveTicketBtn.addEventListener('click', async () => {
+      await decideApproval(true);
+    });
+
+    rejectTicketBtn.addEventListener('click', async () => {
+      await decideApproval(false);
+    });
+
     setStatus('waiting');
+    setApprovalDetail(null);
     loadVersionTree({ silent: true });
+    loadChangeExplanations({ silent: true });
+    loadApprovals({ silent: true, keepSelection: false });
   </script>
 </body>
 </html>
